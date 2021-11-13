@@ -8,7 +8,7 @@ namespace Entities
 {
     public class RepositoryContext : DbContext
     {
-        protected RepositoryContext(DbContextOptions options)
+        public RepositoryContext(DbContextOptions options)
             : base(options)
         {
         }

@@ -31,6 +31,8 @@ namespace NorthwindServer
             services.ConfigureCors();
             services.ConfigureLogger();
             services.ConfigureLocalDBContext(Configuration);
+            services.ConfigurationRepositoryWrapper();
+
             services.AddControllers();
         }
 

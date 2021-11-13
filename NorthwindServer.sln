@@ -5,11 +5,13 @@ VisualStudioVersion = 17.0.31825.309
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NorthwindServer", "NorthwindServer\NorthwindServer.csproj", "{E083C591-1610-445A-A533-4787DC9553E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerService", "LoggerService\LoggerService.csproj", "{2657D889-4772-4C2A-A0FB-9B1831F3D900}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggerService", "LoggerService\LoggerService.csproj", "{2657D889-4772-4C2A-A0FB-9B1831F3D900}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "Contracts\Contracts.csproj", "{46D36106-02D4-4221-BC8F-E615AEF195D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "Contracts\Contracts.csproj", "{46D36106-02D4-4221-BC8F-E615AEF195D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{C6510ABD-3C09-4D8B-9005-B4A0D787F520}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{C6510ABD-3C09-4D8B-9005-B4A0D787F520}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{3D6A3EDD-0E7C-4AB5-A3C7-83D19D8379FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{C6510ABD-3C09-4D8B-9005-B4A0D787F520}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6510ABD-3C09-4D8B-9005-B4A0D787F520}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6510ABD-3C09-4D8B-9005-B4A0D787F520}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D6A3EDD-0E7C-4AB5-A3C7-83D19D8379FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D6A3EDD-0E7C-4AB5-A3C7-83D19D8379FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D6A3EDD-0E7C-4AB5-A3C7-83D19D8379FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D6A3EDD-0E7C-4AB5-A3C7-83D19D8379FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

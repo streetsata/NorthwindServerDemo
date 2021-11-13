@@ -4,6 +4,7 @@ using LoggerService;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using Repository;
 
 namespace NorthwindServer.Extensions
 {
@@ -35,6 +36,11 @@ namespace NorthwindServer.Extensions
                 return;
 
             services.AddDbContext<RepositoryContext>(o => o.UseSqlServer(connectionString));
+        }
+
+        public static void ConfigurationRepositoryWrapper(this IServiceCollection services)
+        {
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
         }
     }
 }
