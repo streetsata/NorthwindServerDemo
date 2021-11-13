@@ -1,6 +1,9 @@
 ﻿using Contracts;
+using Entities;
 using LoggerService;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 
 namespace NorthwindServer.Extensions
 {
@@ -22,6 +25,16 @@ namespace NorthwindServer.Extensions
         public static void ConfigureLogger(this IServiceCollection services)
         {
             services.AddSingleton<ILoggerManager, LoggerManager>();
+        }
+
+        public static void ConfigureLocalDBContext(this IServiceCollection services, IConfiguration configuration)
+        {
+            var connectionString = configuration["LocalDBConnection:connectionString"];
+            
+            if (connectionString == null)
+                return;
+
+            services.AddDbContext<RepositoryContext>(o => o.UseSqlServer(connectionString));
         }
     }
 }

@@ -21,6 +21,7 @@ namespace Entities.Models
         public decimal? UnitPrice { get; set; }
         public bool Discontinued { get; set; }
 
+        // Nav
         [ForeignKey(nameof(Category))]
         public int CategoryID { get; set; }
         public Category Category { get; set; }
