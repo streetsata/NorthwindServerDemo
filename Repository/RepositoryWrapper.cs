@@ -11,6 +11,7 @@ namespace Repository
         private RepositoryContext _repositoryContext;
         private ICategoryRepository _categoryRepository;
         private IProductRepository _productRepository;
+        private IEmployeeRepository _employeeRepository;
 
         public RepositoryWrapper(RepositoryContext repositoryContext)
         {
@@ -36,6 +37,17 @@ namespace Repository
                     _productRepository = new ProductRepository(_repositoryContext);
 
                 return _productRepository; 
+            }
+        }
+
+        public IEmployeeRepository EmployeeRepository
+        {
+            get 
+            {
+                if(_employeeRepository == null)
+                    _employeeRepository = new EmployeeRepository(_repositoryContext);
+
+                return _employeeRepository;
             }
         }
 

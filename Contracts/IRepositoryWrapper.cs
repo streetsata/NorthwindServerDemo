@@ -8,6 +8,7 @@ namespace Contracts
     {
         ICategoryRepository CategoryRepository { get; }
         IProductRepository ProductRepository { get; }
+        IEmployeeRepository EmployeeRepository { get; }
         void Save();
     }
 }

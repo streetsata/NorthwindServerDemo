@@ -38,9 +38,14 @@ namespace NorthwindServer.Extensions
             services.AddDbContext<RepositoryContext>(o => o.UseSqlServer(connectionString));
         }
 
-        public static void ConfigurationRepositoryWrapper(this IServiceCollection services)
+        public static void ConfigureRepositoryWrapper(this IServiceCollection services)
         {
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+        }
+
+        public static void ConfigureAutoMapper(this IServiceCollection services)
+        {
+            services.AddAutoMapper(typeof(Startup));
         }
     }
 }

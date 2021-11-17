@@ -29,7 +29,7 @@ namespace Repository
 
         public IQueryable<T> FindAll()
         {
-            return RepositoryContext.Set<T>().AsNoTracking();
+            return RepositoryContext.Set<T>().AsNoTracking(); // select * from Categories (without cash)
         }
 
         public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression)

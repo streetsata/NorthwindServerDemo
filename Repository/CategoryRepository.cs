@@ -3,6 +3,7 @@ using Entities;
 using Entities.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Repository
@@ -12,6 +13,18 @@ namespace Repository
         public CategoryRepository(RepositoryContext repositoryContext) 
             : base(repositoryContext)
         {
+        }
+
+        public IEnumerable<Category> GetAllCategories()
+        {
+            return FindAll()
+                .OrderBy(c => c.CategoryName)
+                .ToList();
+        }
+
+        public Category GetCategoryById(int id)
+        {
+            return FindByCondition(c => c.Id.Equals(id)).FirstOrDefault();
         }
     }
 }

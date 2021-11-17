@@ -7,5 +7,7 @@ namespace Contracts
 {
     public interface ICategoryRepository : IRepositoryBase<Category>
     {
+        IEnumerable<Category> GetAllCategories();
+        Category GetCategoryById(int id);
     }
 }
