@@ -7,7 +7,12 @@ namespace Contracts
 {
     public interface ICategoryRepository : IRepositoryBase<Category>
     {
+        // HttpGet
         IEnumerable<Category> GetAllCategories();
         Category GetCategoryById(int id);
+        Category GetCatgoryWithOwnProducts(int id);
+
+        // HttpPost
+        void CreateCategory(Category category);
     }
 }

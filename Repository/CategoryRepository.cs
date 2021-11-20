@@ -1,6 +1,7 @@
 ﻿using Contracts;
 using Entities;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,17 @@ namespace Repository
         public Category GetCategoryById(int id)
         {
             return FindByCondition(c => c.Id.Equals(id)).FirstOrDefault();
+        }
+
+        public Category GetCatgoryWithOwnProducts(int id)
+        {
+            return FindByCondition(c => c.Id.Equals(id))
+                .Include(p => p.Products)
+                .FirstOrDefault();
+        }
+        public void CreateCategory(Category category)
+        {
+            Create(category);
         }
     }
 }

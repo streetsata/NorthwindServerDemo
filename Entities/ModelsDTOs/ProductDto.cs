@@ -4,11 +4,10 @@ using System.Text;
 
 namespace Entities.ModelsDTOs
 {
-    public class CategoryDto
+    public class ProductDto
     {
         public int Id { get; set; }
-        public string CategoryName { get; set; }
-
-        public IEnumerable<ProductDto> Products { get; set; }
+        public string ProductName { get; set; }
+        public decimal? UnitPrice { get; set; }
     }
 }

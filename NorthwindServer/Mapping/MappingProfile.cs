@@ -10,6 +10,8 @@ namespace NorthwindServer.Mapping
         {
             CreateMap<Employee, EmployeeDto>();
             CreateMap<Category, CategoryDto>();
+            CreateMap<Product, ProductDto>();
+            CreateMap<CategoryForCreationDto, Category>();
         }
     }
 }

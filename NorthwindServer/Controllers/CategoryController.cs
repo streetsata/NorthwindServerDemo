@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Contracts;
+using Entities.Models;
 using Entities.ModelsDTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,7 @@ using System.Collections.Generic;
 
 namespace NorthwindServer.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Category")]
     [ApiController]
     public class CategoryController : ControllerBase
     {
@@ -44,7 +45,7 @@ namespace NorthwindServer.Controllers
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetCategoryById")]
         public IActionResult GetCatgoryById(int id)
         {
             try
@@ -68,6 +69,67 @@ namespace NorthwindServer.Controllers
             catch (Exception ex)
             {
                 _logger.LogError($"Error inside controller Category, action GetCatgoryById, message: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpGet("{id}/products", Name = "GetCatgoryWithOwnProducts")]
+        public IActionResult GetCatgoryWithOwnProducts(int id)
+        {
+            try
+            {
+                var category = _repository.CategoryRepository.GetCatgoryWithOwnProducts(id);
+
+                if (category == null)
+                {
+                    _logger.LogError($"Category with id: {id} not found in DB");
+                    return NotFound(); // 404
+                }
+                else
+                {
+                    _logger.LogInfo($"Returned category withs own products with id: {id}");
+
+                    var categoryResult = _mapper.Map<CategoryDto>(category);
+
+                    return Ok(categoryResult);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error inside controller Category, action GetCatgoryWithOwnProducts, message: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult CreateCategory([FromBody] CategoryForCreationDto category)
+        {
+            try
+            {
+                if (category == null)
+                {
+                    _logger.LogError("Category object sent from front is null");
+                    return BadRequest();
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    _logger.LogError("Incorrect model object from front");
+                    return BadRequest("Incorrect model object from front");
+                }
+
+                var entity = _mapper.Map<Category>(category);
+
+                _repository.CategoryRepository.CreateCategory(entity);
+                _repository.Save();
+
+                var createdCategory = _mapper.Map<CategoryDto>(entity);
+
+                return CreatedAtRoute("GetCatgoryWithOwnProducts", new { id = createdCategory.Id }, createdCategory);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error inside controller Category, action CreateCategory, message: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
         }
