@@ -38,5 +38,10 @@ namespace Repository
         {
             Create(category);
         }
+
+        public void UpdateCategory(Category category)
+        {
+            Update(category);
+        }
     }
 }

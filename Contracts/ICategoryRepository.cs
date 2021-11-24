@@ -14,5 +14,8 @@ namespace Contracts
 
         // HttpPost
         void CreateCategory(Category category);
+
+        // HttpPut
+        void UpdateCategory(Category category);
     }
 }

@@ -33,6 +33,7 @@ namespace NorthwindServer
             services.ConfigureLocalDBContext(Configuration);
             services.ConfigureRepositoryWrapper();
             services.ConfigureAutoMapper();
+            services.ConfigureSwagger();
 
             services.AddControllers();
         }
@@ -51,6 +52,13 @@ namespace NorthwindServer
             app.UseCors("MyCorsPolicy");
 
             app.UseAuthorization();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My Northwind Server API");
+            });
 
             app.UseEndpoints(endpoints =>
             {
