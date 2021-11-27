@@ -7,5 +7,6 @@ namespace Contracts
 {
     public interface IProductRepository : IRepositoryBase<Product>
     {
+        IEnumerable<Product> ProductByCategory(int id);
     }
 }

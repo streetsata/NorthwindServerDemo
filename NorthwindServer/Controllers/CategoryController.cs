@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace NorthwindServer.Controllers
 {
@@ -24,20 +26,21 @@ namespace NorthwindServer.Controllers
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        /// <summary>
-        /// Get All Categories
-        /// </summary>
-        /// <returns>List of Categories</returns>
-        /// <remarks>
-        /// Sample request
-        ///     
-        /// </remarks>
         [HttpGet]
-        public IActionResult GeAllCategories()
+        public async Task<IActionResult> GeAllCategories()
         {
             try
             {
-                var categories = _repository.CategoryRepository.GetAllCategories();
+                IEnumerable<Category> categories = null;
+
+                if (new Random().Next(1000, 10000) > 2048)
+                {
+                    categories = await _repository.CategoryRepository.GetAllCategoriesAsync();
+                }
+                else
+                {
+                    categories = _repository.CategoryRepository.GetAllCategories();
+                }
 
                 _logger.LogInfo($"Returned all categories from DB");
 
@@ -54,11 +57,11 @@ namespace NorthwindServer.Controllers
         }
 
         [HttpGet("{id}", Name = "GetCategoryById")]
-        public IActionResult GetCatgoryById(int id)
+        public async Task<IActionResult> GetCatgoryById(int id)
         {
             try
             {
-                var category = _repository.CategoryRepository.GetCategoryById(id);
+                var category = await _repository.CategoryRepository.GetCategoryByIdAsync(id);
 
                 if (category == null)
                 {
@@ -82,11 +85,11 @@ namespace NorthwindServer.Controllers
         }
 
         [HttpGet("{id}/products", Name = "GetCatgoryWithOwnProducts")]
-        public IActionResult GetCatgoryWithOwnProducts(int id)
+        public async Task<IActionResult> GetCatgoryWithOwnProducts(int id)
         {
             try
             {
-                var category = _repository.CategoryRepository.GetCatgoryWithOwnProducts(id);
+                var category = await _repository.CategoryRepository.GetCatgoryWithOwnProductsAsync(id);
 
                 if (category == null)
                 {
@@ -120,7 +123,7 @@ namespace NorthwindServer.Controllers
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
-        public IActionResult CreateCategory([FromBody] CategoryForCreationDto category)
+        public async Task<IActionResult> CreateCategory([FromBody] CategoryForCreationDto category)
         {
             try
             {
@@ -139,7 +142,7 @@ namespace NorthwindServer.Controllers
                 var entity = _mapper.Map<Category>(category);
 
                 _repository.CategoryRepository.CreateCategory(entity);
-                _repository.Save();
+                await _repository.SaveAsync();
 
                 var createdCategory = _mapper.Map<CategoryDto>(entity);
 
@@ -154,7 +157,7 @@ namespace NorthwindServer.Controllers
 
         [HttpPut("{id}")]
         [ProducesResponseType(404)]
-        public IActionResult UpdateCategory(int id, [FromBody] CategoryForCreateUpdateDto category)
+        public async Task<IActionResult> UpdateCategory(int id, [FromBody] CategoryForCreateUpdateDto category)
         {
             try
             {
@@ -181,13 +184,46 @@ namespace NorthwindServer.Controllers
                 _mapper.Map(category, entity);
 
                 _repository.CategoryRepository.UpdateCategory(entity);
-                _repository.Save();
+                await _repository.SaveAsync();
 
                 return NoContent();
             }
             catch (Exception ex)
             {
                 _logger.LogError($"Error inside controller Category, action CreateCategory, message: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCategory(int id)
+        {
+            try
+            {
+                var category = _repository.CategoryRepository.GetCategoryById(id);
+
+                if (category == null)
+                {
+                    _logger.LogError("Category object sent from front is null");
+                    return NotFound();
+                }
+
+                if (_repository.ProductRepository.ProductByCategory(id).Any())
+                {
+                    _logger.LogError($"Cannot delete Category with id: {id} Couse it has related Product");
+                    return BadRequest($"Cannot delete Category with id: {id} Couse it has related Product");
+                }
+
+                _repository.CategoryRepository.DeleteCategory(category);
+                await _repository.SaveAsync();
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error inside controller Category, action DeleteCategory, message: {ex.Message}");
+                if(ex.InnerException != null)
+                    _logger.LogError($"Error inside controller Category, action DeleteCategory, InnerException message: {ex.InnerException.Message}");
                 return StatusCode(500, "Internal server error");
             }
         }

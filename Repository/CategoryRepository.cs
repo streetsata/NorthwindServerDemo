@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Repository
 {
@@ -16,6 +17,7 @@ namespace Repository
         {
         }
 
+        // Sync
         public IEnumerable<Category> GetAllCategories()
         {
             return FindAll()
@@ -42,6 +44,32 @@ namespace Repository
         public void UpdateCategory(Category category)
         {
             Update(category);
+        }
+
+        public void DeleteCategory(Category category)
+        {
+            Delete(category);
+        }
+
+        // Async
+        public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
+        {
+            return await FindAll()
+                .OrderBy(c => c.CategoryName)
+                .ToListAsync();
+        }
+
+        public async Task<Category> GetCategoryByIdAsync(int id)
+        {
+            return await FindByCondition(c => c.Id.Equals(id))
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<Category> GetCatgoryWithOwnProductsAsync(int id)
+        {
+            return await FindByCondition(c => c.Id.Equals(id))
+                .Include(p => p.Products)
+                .FirstOrDefaultAsync();
         }
     }
 }
