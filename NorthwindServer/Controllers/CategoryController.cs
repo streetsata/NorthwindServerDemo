@@ -31,17 +31,8 @@ namespace NorthwindServer.Controllers
         {
             try
             {
-                IEnumerable<Category> categories = null;
-
-                if (new Random().Next(1000, 10000) > 2048)
-                {
-                    categories = await _repository.CategoryRepository.GetAllCategoriesAsync();
-                }
-                else
-                {
-                    categories = _repository.CategoryRepository.GetAllCategories();
-                }
-
+                var categories = await _repository.CategoryRepository.GetAllCategoriesAsync();
+               
                 _logger.LogInfo($"Returned all categories from DB");
 
                 var categoriesResult = _mapper.Map<IEnumerable<CategoryDto>>(categories);
